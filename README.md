@@ -43,7 +43,9 @@ Set the following environment variables:
 | `FALCON_BASE_URL` | No | API base URL (default: `https://api.crowdstrike.com`) |
 | `FALCON_MEMBER_CID` | No | Member CID for MSSP |
 
-CLI options (`--client-id`, `--client-secret`, `--base-url`, `--member-cid`) override environment variables.
+CLI options (`--client-id`, `--base-url`, `--member-cid`) override environment variables.
+
+> **Note:** `FALCON_CLIENT_SECRET` is only configurable via environment variable or `.env` file to prevent exposure in process lists. Ensure `.env` files have restrictive permissions (`chmod 600 .env`).
 
 ## Usage
 
