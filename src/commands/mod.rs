@@ -104,6 +104,23 @@ pub mod user_management;
 pub mod workflows;
 pub mod zero_trust_assessment;
 
+/// Percent-encode a query parameter value.
+fn encode(s: &str) -> String {
+    use std::fmt::Write;
+    let mut out = String::with_capacity(s.len());
+    for b in s.bytes() {
+        match b {
+            b'A'..=b'Z' | b'a'..=b'z' | b'0'..=b'9' | b'-' | b'_' | b'.' | b'~' => {
+                out.push(b as char);
+            }
+            _ => {
+                write!(out, "%{:02X}", b).ok();
+            }
+        }
+    }
+    out
+}
+
 /// Build a query path with optional filter, limit, and offset parameters.
 pub fn build_query_path(
     base: &str,
@@ -113,10 +130,10 @@ pub fn build_query_path(
 ) -> String {
     let mut path = format!("{}?limit={}", base, limit);
     if let Some(f) = filter {
-        path.push_str(&format!("&filter={}", urlencoding(f)));
+        path.push_str(&format!("&filter={}", encode(f)));
     }
     if let Some(o) = offset {
-        path.push_str(&format!("&offset={}", o));
+        path.push_str(&format!("&offset={}", encode(o)));
     }
     path
 }
@@ -124,13 +141,6 @@ pub fn build_query_path(
 /// Build a query string for multiple IDs.
 #[allow(dead_code)]
 pub fn build_ids_query(base: &str, ids: &[String]) -> String {
-    let params: Vec<String> = ids.iter().map(|i| format!("ids={}", i)).collect();
+    let params: Vec<String> = ids.iter().map(|i| format!("ids={}", encode(i))).collect();
     format!("{}?{}", base, params.join("&"))
-}
-
-fn urlencoding(s: &str) -> String {
-    s.replace(' ', "%20")
-        .replace('+', "%2B")
-        .replace(':', "%3A")
-        .replace('\'', "%27")
 }
