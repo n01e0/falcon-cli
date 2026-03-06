@@ -12,6 +12,9 @@ use config::Config;
 
 #[tokio::main]
 async fn main() {
+    // Load .env file if present (errors are silently ignored)
+    let _ = dotenvy::dotenv();
+
     let cli = Cli::parse();
 
     let config = match build_config(&cli) {
