@@ -60,6 +60,9 @@ async fn execute(
 ) -> error::Result<serde_json::Value> {
     match command {
         Command::Alert { action } => commands::alerts::execute(client, action).await,
+        Command::AutomatedLead { action } => {
+            commands::automated_lead::execute(client, action).await
+        }
         Command::ApiIntegration { action } => {
             commands::api_integrations::execute(client, action).await
         }

@@ -38,7 +38,7 @@ pub struct Cli {
 
 #[derive(Subcommand, Debug)]
 pub enum Command {
-    /// Manage alerts (list, get, automated-lead)
+    /// Manage alerts
     Alert {
         #[command(subcommand)]
         action: commands::alerts::Action,
@@ -562,5 +562,14 @@ pub enum Command {
     ZeroTrust {
         #[command(subcommand)]
         action: commands::zero_trust_assessment::Action,
+    },
+
+    // ── Extended (multi-API) ──
+    // Commands below combine multiple Falcon API calls into a single operation.
+    // They are falcon-cli specific and do not map 1:1 to a Falcon API endpoint.
+    /// Investigate automated-lead alerts [multi-API]
+    AutomatedLead {
+        #[command(subcommand)]
+        action: commands::automated_lead::Action,
     },
 }
