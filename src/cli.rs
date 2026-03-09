@@ -99,6 +99,10 @@ pub struct Cli {
     #[arg(long, short, default_value = "json")]
     pub output: OutputFormat,
 
+    /// Pretty-print JSON output
+    #[arg(long)]
+    pub pretty: bool,
+
     #[command(subcommand)]
     pub command: Command,
 }
@@ -760,10 +764,17 @@ pub enum Command {
         #[command(subcommand)]
         action: commands::faas_execution::Action,
     },
-
     /// Generate shell completion scripts
     Completion {
         /// Target shell
         shell: Shell,
+    },
+    // ── Extended (multi-API) ──
+    // Commands below combine multiple Falcon API calls into a single operation.
+    // They are falcon-cli specific and do not map 1:1 to a Falcon API endpoint.
+    /// Investigate automated-lead alerts [multi-API]
+    AutomatedLead {
+        #[command(subcommand)]
+        action: commands::automated_lead::Action,
     },
 }
