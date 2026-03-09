@@ -763,4 +763,13 @@ pub enum Command {
         #[command(subcommand)]
         action: commands::faas_execution::Action,
     },
+
+    // ── Extended (multi-API) ──
+    // Commands below combine multiple Falcon API calls into a single operation.
+    // They are falcon-cli specific and do not map 1:1 to a Falcon API endpoint.
+    /// Investigate automated-lead alerts [multi-API]
+    AutomatedLead {
+        #[command(subcommand)]
+        action: commands::automated_lead::Action,
+    },
 }
